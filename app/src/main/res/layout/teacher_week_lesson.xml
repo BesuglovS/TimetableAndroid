@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#72AAFF"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="14:00"
+        android:id="@+id/time"
+        android:background="#72AAFF"
+        android:textColor="#ddffdd"
+        android:layout_centerVertical="true"
+        android:padding="3sp"
+        android:layout_gravity="center_vertical" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#72AAFF"
+            android:textColor="#ddffdd"
+            android:text="12 А"
+            android:id="@+id/groupName"
+            android:padding="3sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#72AAFF"
+            android:textColor="#ddffdd"
+            android:text="Алгебра и аналитическая геометрия"
+            android:id="@+id/discName"
+            android:padding="3sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#72AAFF"
+            android:textColor="#ddffdd"
+            android:text="Ауд. 304"
+            android:id="@+id/audName"
+            android:padding="3sp"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
+
+</LinearLayout>

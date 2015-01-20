@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Расписание СГОАН</string>
+    <string name="lessons_schedule">Расписание занятий</string>
+    <string name="choose_teacher">Выбрать преподавателя</string>
+
+    <string name="title_activity_teacher_schedule">Расписание преподавателя (СГОАН)</string>
+    <string name="teachers_schedule">Расписание преподавателя</string>
+
+    <string name="title_activity_session">Расписание сессии (СГОАН)</string>
+    <string name="session_schedule">Расписание сессии</string>
+
+</resources>

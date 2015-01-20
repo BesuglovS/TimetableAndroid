@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ru.besuglovs.nu.timetable.Session">
+    <item android:id="@+id/action_changeSessionGroup" android:title="Изменить группу"
+        android:orderInCategory="100" app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_lessonsSchedule" android:title="@string/lessons_schedule"
+        android:orderInCategory="101" app:showAsAction="never" />
+    <item android:id="@+id/action_teachersSchedule" android:title="@string/teachers_schedule"
+        android:orderInCategory="102" app:showAsAction="never" />
+</menu>
