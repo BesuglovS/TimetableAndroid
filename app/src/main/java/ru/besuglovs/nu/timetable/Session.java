@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -21,22 +21,18 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import ru.besuglovs.nu.timetable.apiInterfaces.ScheduleInterface;
 import ru.besuglovs.nu.timetable.fragments.SessionScheduleFragment;
-import ru.besuglovs.nu.timetable.fragments.TabsFragment;
-import ru.besuglovs.nu.timetable.fragments.TeacherScheduleTabsFragment;
-import ru.besuglovs.nu.timetable.fragments.groupListFragment;
 import ru.besuglovs.nu.timetable.fragments.sessionGroupListFragment;
 import ru.besuglovs.nu.timetable.timetable.StudentGroup;
-import ru.besuglovs.nu.timetable.timetable.Teacher;
 
 
-public class Session extends ActionBarActivity
+public class Session extends AppCompatActivity
     implements sessionGroupListFragment.Callbacks
 {
 
     public static ScheduleInterface api;
     public static Integer groupId = -1;
-    public static String groupName = "";
-    public static List<StudentGroup> groupList;
+    private static String groupName = "";
+    private static List<StudentGroup> groupList;
     public static List<StudentGroup> mainGroups;
 
     @Override
@@ -60,7 +56,7 @@ public class Session extends ActionBarActivity
                 public void success(List<StudentGroup> studentGroups, Response response) {
                     groupList = studentGroups;
 
-                    mainGroups = new ArrayList<StudentGroup>();
+                    mainGroups = new ArrayList<>();
                     for (StudentGroup group : groupList) {
                         if (!group.Name.contains("+") &&
                                 !group.Name.contains("-") &&
@@ -103,11 +99,7 @@ public class Session extends ActionBarActivity
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     @Override
@@ -125,7 +117,7 @@ public class Session extends ActionBarActivity
         }
     }
 
-    public static class StudentGroupNameComparator implements Comparator<StudentGroup> {
+    private static class StudentGroupNameComparator implements Comparator<StudentGroup> {
         @Override
         public int compare(StudentGroup group1, StudentGroup group2) {
             return group1.Name.compareTo(group2.Name);

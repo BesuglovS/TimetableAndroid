@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,12 +24,12 @@ import ru.besuglovs.nu.timetable.fragments.teacherListFragment;
 import ru.besuglovs.nu.timetable.timetable.Teacher;
 
 
-public class TeacherActivity extends ActionBarActivity
+public class TeacherActivity extends AppCompatActivity
     implements teacherListFragment.TeacherChoiceCallbacks
 {
     public static ScheduleInterface api;
     public static Integer teacherId = -1;
-    public static String teacherName = "";
+    private static String teacherName = "";
     public static List<Teacher> teacherList;
 
     @Override
@@ -56,7 +56,7 @@ public class TeacherActivity extends ActionBarActivity
 
                     teacherList = teachers;
 
-                    if (teacherList != null & teacherList.size() > 0) {
+                    if (teacherList.size() > 0) {
                         TeacherActivity.teacherId = teacherList.get(0).TeacherId;
                         TeacherActivity.teacherName = teacherList.get(0).FIO;
 
@@ -95,23 +95,19 @@ public class TeacherActivity extends ActionBarActivity
                 .commit();
     }
 
-    public static class TeacherNameComparator implements Comparator<Teacher> {
+    private static class TeacherNameComparator implements Comparator<Teacher> {
         @Override
         public int compare(Teacher teacher1, Teacher teacher2) {
             return teacher1.FIO.compareTo(teacher2.FIO);
         }
     }
 
-    public boolean isConnected()
+    private boolean isConnected()
     {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
+        return networkInfo != null && networkInfo.isConnected();
     }
 
 

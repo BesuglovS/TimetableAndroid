@@ -8,18 +8,17 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ru.besuglovs.nu.timetable.MainActivity;
+import ru.besuglovs.nu.timetable.ListAdapters.ViewHolders.GroupExamsViewHolder;
 import ru.besuglovs.nu.timetable.R;
 import ru.besuglovs.nu.timetable.apiViews.GroupExam;
-import ru.besuglovs.nu.timetable.apiViews.weekLesson;
 
 /**
  * Created by bs on 19.01.2015.
  */
 public class GroupExamsAdapter extends BaseAdapter {
 
-    List<GroupExam> exams;
-    LayoutInflater inflater;
+    private final List<GroupExam> exams;
+    private final LayoutInflater inflater;
 
     public GroupExamsAdapter(List<GroupExam> exams, LayoutInflater inflater) {
         this.exams = exams;
@@ -43,28 +42,39 @@ public class GroupExamsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.session_exam, parent, false);
+        View vi = convertView;
+        GroupExamsViewHolder groupExamsViewHolder;
+
+        if (convertView == null) {
+
+            vi = inflater.inflate(R.layout.session_exam, null);
+
+            groupExamsViewHolder = new GroupExamsViewHolder();
+            groupExamsViewHolder.discName  = (TextView) vi.findViewById(R.id.discName);
+            groupExamsViewHolder.teacherFIO = (TextView) vi.findViewById(R.id.teacherFIO);
+            groupExamsViewHolder.consDatetime = (TextView) vi.findViewById(R.id.consDateTime);
+            groupExamsViewHolder.consAud = (TextView) vi.findViewById(R.id.consAud);
+            groupExamsViewHolder.examDatetime = (TextView) vi.findViewById(R.id.examDateTime);
+            groupExamsViewHolder.examAud = (TextView) vi.findViewById(R.id.examAud);
+
+            vi.setTag(groupExamsViewHolder);
+
+        } else {
+            groupExamsViewHolder = (GroupExamsViewHolder) vi.getTag();
+        }
 
         GroupExam e = exams.get(position);
 
-        TextView discName = (TextView) view.findViewById(R.id.discName);
-        discName.setText(e.DisciplineName);
+        // now set your text view here like
+        groupExamsViewHolder.discName.setText(e.DisciplineName);
+        groupExamsViewHolder.teacherFIO.setText(e.TeacherFIO);
+        groupExamsViewHolder.consDatetime.setText(e.ConsultationDateTime);
+        groupExamsViewHolder.consAud.setText(e.ConsultationAuditoriumName);
+        groupExamsViewHolder.examDatetime.setText(e.ExamDateTime);
+        groupExamsViewHolder.examAud.setText(e.ExamAuditoriumName);
 
-        TextView teacherFIO = (TextView) view.findViewById(R.id.teacherFIO);
-        teacherFIO.setText(e.TeacherFIO);
 
-        TextView consDatetime = (TextView) view.findViewById(R.id.consDateTime);
-        consDatetime.setText(e.ConsultationDateTime);
-
-        TextView consAud = (TextView) view.findViewById(R.id.consAud);
-        consAud.setText(e.ConsultationAuditoriumName);
-
-        TextView examDatetime= (TextView) view.findViewById(R.id.examDateTime);
-        examDatetime.setText(e.ExamDateTime);
-
-        TextView examAud = (TextView) view.findViewById(R.id.examAud);
-        examAud.setText(e.ExamAuditoriumName);
-
-        return view;
+        // return your view
+        return vi;
     }
 }

@@ -40,7 +40,7 @@ public class groupListFragment extends DialogFragment {
     }
 
     public interface Callbacks {
-        public void onGroupSelected(StudentGroup group);
+        void onGroupSelected(StudentGroup group);
     }
 
     @Override

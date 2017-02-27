@@ -2,28 +2,19 @@ package ru.besuglovs.nu.timetable.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import ru.besuglovs.nu.timetable.Components.NestedListView;
 import ru.besuglovs.nu.timetable.ListAdapters.GroupExamsAdapter;
-import ru.besuglovs.nu.timetable.ListAdapters.WeekScheduleAdapter;
 import ru.besuglovs.nu.timetable.MainActivity;
 import ru.besuglovs.nu.timetable.R;
 import ru.besuglovs.nu.timetable.Session;
@@ -56,7 +47,7 @@ public class SessionScheduleFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-                showGroupExams(view, "Epic fail: " + error.getMessage());
+                //TODO Grace error handling
             }
         });
 
@@ -64,17 +55,8 @@ public class SessionScheduleFragment extends Fragment {
         return view;
     }
 
-    public void showGroupExams(View view, String text)
+    private void showGroupExams(View view, Map<Integer, GroupExams> groupExams)
     {
-        Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
-        Log.e("bigError", text);
-    }
-
-    public void showGroupExams(View view, Map<Integer, GroupExams> groupExams)
-    {
-        SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatOut = new SimpleDateFormat("dd.MM.yyyy");
-
         List<GroupExam> exams = groupExams.get(groupExams.keySet().toArray()[0]).Exams;
 
         ListView lv = (ListView) view.findViewById(R.id.sessionListView);

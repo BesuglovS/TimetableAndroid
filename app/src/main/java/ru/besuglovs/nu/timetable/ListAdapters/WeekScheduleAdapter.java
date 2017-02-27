@@ -4,12 +4,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
+import ru.besuglovs.nu.timetable.ListAdapters.ViewHolders.WeekScheduleViewHolder;
 import ru.besuglovs.nu.timetable.MainActivity;
 import ru.besuglovs.nu.timetable.R;
 import ru.besuglovs.nu.timetable.apiViews.weekLesson;
@@ -19,8 +18,8 @@ import ru.besuglovs.nu.timetable.apiViews.weekLesson;
  */
 public class WeekScheduleAdapter extends BaseAdapter {
 
-    List<weekLesson> lessons;
-    LayoutInflater inflater;
+    private final List<weekLesson> lessons;
+    private final LayoutInflater inflater;
 
     public WeekScheduleAdapter(List<weekLesson> lessons, LayoutInflater inflater) {
         this.lessons = lessons;
@@ -44,7 +43,23 @@ public class WeekScheduleAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.week_lesson, parent, false);
+        View vi = convertView;
+        WeekScheduleViewHolder weekScheduleViewHolder;
+
+        if (convertView == null) {
+
+            vi = inflater.inflate(R.layout.week_lesson, null);
+
+            weekScheduleViewHolder = new WeekScheduleViewHolder();
+            weekScheduleViewHolder.lesson_audName  = (TextView) vi.findViewById(R.id.audName);
+            weekScheduleViewHolder.lesson_discName  = (TextView) vi.findViewById(R.id.discName);
+            weekScheduleViewHolder.lesson_teacherFIO = (TextView) vi.findViewById(R.id.teacherFIO);
+            weekScheduleViewHolder.lesson_time = (TextView) vi.findViewById(R.id.time);
+
+            vi.setTag(weekScheduleViewHolder);
+
+        } else
+            weekScheduleViewHolder = (WeekScheduleViewHolder) vi.getTag();
 
         weekLesson l = lessons.get(position);
 
@@ -55,18 +70,14 @@ public class WeekScheduleAdapter extends BaseAdapter {
             disciplineName += " (" + l.groupName + ")";
         }
 
-        TextView discName = (TextView) view.findViewById(R.id.discName);
-        discName.setText(disciplineName);
+        // now set your text view here like
+        weekScheduleViewHolder.lesson_audName.setText(l.audName);
+        weekScheduleViewHolder.lesson_teacherFIO.setText(l.FIO);
+        weekScheduleViewHolder.lesson_discName.setText(disciplineName);
+        weekScheduleViewHolder.lesson_time.setText(l.Time.substring(0,5));
 
-        TextView teacherFIO = (TextView) view.findViewById(R.id.teacherFIO);
-        teacherFIO.setText(l.FIO);
 
-        TextView audName = (TextView) view.findViewById(R.id.audName);
-        audName.setText(l.audName);
-
-        TextView time = (TextView) view.findViewById(R.id.time);
-        time.setText(l.Time.substring(0,5));
-
-        return view;
+        // return your view
+        return vi;
     }
 }

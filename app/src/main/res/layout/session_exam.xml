@@ -22,7 +22,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cons"
-                android:text="Консультация"
+                android:text="@string/consultation"
                 android:textColor="#FFFFFF"
                 android:layout_gravity="center_horizontal" />
 
@@ -58,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/exam"
-                android:text="Экзамен"
+                android:text="@string/exam"
                 android:textColor="#FFFFFF"
                 android:layout_gravity="center_horizontal" />
             <TextView

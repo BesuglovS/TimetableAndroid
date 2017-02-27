@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,9 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -36,23 +34,23 @@ import ru.besuglovs.nu.timetable.timetable.StudentGroup;
 import ru.besuglovs.nu.timetable.timetable.Timetable;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends AppCompatActivity
     implements groupListFragment.Callbacks,
         TabsFragment.SwitchNoNetwork,
         TabsNoConnectionFragment.SwitchToNetwork
 {
 
     public static final String API_ENDPOINT = "http://wiki.nayanova.edu/";
-    public static final String FILENAME = "timetable.json";
+    //public static final String FILENAME = "timetable.json";
 
     public static boolean NETWORK = false;
-    public static boolean SAVED_SCHEDULE = false;
-    public static boolean DB_EXISTS = false;
+    //public static boolean SAVED_SCHEDULE = false;
+    private static boolean DB_EXISTS = false;
 
     public static ScheduleInterface api;
     public static Integer groupId = -1;
     public static String groupName = "";
-    public static List<StudentGroup> groupList;
+    private static List<StudentGroup> groupList;
     public static List<StudentGroup> mainGroups;
 
     private DBHelper dbHelper = null;
@@ -70,12 +68,10 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = getIntent();
-
         // Get network status
         NETWORK = isConnected();
 
-        //SAVED_SCHEDULE = fileExistance(FILENAME);
+        //SAVED_SCHEDULE = fileExistence(FILENAME);
         DB_EXISTS = dbExists();
 
         if (NETWORK)
@@ -91,7 +87,7 @@ public class MainActivity extends ActionBarActivity
                 public void success(List<StudentGroup> studentGroups, Response response) {
                     groupList = studentGroups;
 
-                    mainGroups = new ArrayList<StudentGroup>();
+                    mainGroups = new ArrayList<>();
                     for(StudentGroup group : groupList)
                     {
                         if (!group.Name.contains("+") &&
@@ -120,7 +116,7 @@ public class MainActivity extends ActionBarActivity
 
                 @Override
                 public void failure(RetrofitError retrofitError) {
-                    Toast.makeText(MainActivity.this, retrofitError.getMessage(), Toast.LENGTH_LONG).show();
+                    // TODO Grace error handling
                 }
             });
 
@@ -139,13 +135,13 @@ public class MainActivity extends ActionBarActivity
                                 .commit();
                         loadingFragment.StartTask(result);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        // TODO Grace error handling
                     }
                 }
 
                 @Override
                 public void failure(RetrofitError retrofitError) {
-                    Toast.makeText(MainActivity.this, retrofitError.getMessage(), Toast.LENGTH_LONG).show();
+                    // TODO Grace error handling
                 }
             });
         }
@@ -159,35 +155,29 @@ public class MainActivity extends ActionBarActivity
                 try {
                     studentGroups = getHelper().getStudentGroupDao().queryForAll();
                 } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-                Map<Integer, StudentGroup> groupWithIds = new HashMap<>();
-                for (StudentGroup g : studentGroups)
-                {
-                    groupWithIds.put(g.StudentGroupId, g);
+                    // TODO Grace error handling
                 }
 
                 mainGroups = new ArrayList<>();
-                for(StudentGroup group : studentGroups)
-                {
-                    if (!group.Name.contains("+") &&
-                            !group.Name.contains("-") &&
-                            !group.Name.contains("|") &&
-                            !group.Name.contains("I"))
-                    {
-                        mainGroups.add(group);
+                if (studentGroups != null) {
+                    for (StudentGroup group : studentGroups) {
+                        if (!group.Name.contains("+") &&
+                                !group.Name.contains("-") &&
+                                !group.Name.contains("|") &&
+                                !group.Name.contains("I")) {
+                            mainGroups.add(group);
+                        }
                     }
-                }
 
-                Collections.sort(mainGroups, new StudentGroupNameComparator());
 
-                if (studentGroups.size() > 0)
-                {
-                    groupId = studentGroups.get(0).StudentGroupId;
-                    groupName = studentGroups.get(0).Name;
+                    Collections.sort(mainGroups, new StudentGroupNameComparator());
 
-                    setTitle(groupName);
+                    if (studentGroups.size() > 0) {
+                        groupId = studentGroups.get(0).StudentGroupId;
+                        groupName = studentGroups.get(0).Name;
+
+                        setTitle(groupName);
+                    }
                 }
 
                 TabsNoConnectionFragment fragment = new TabsNoConnectionFragment();
@@ -208,19 +198,16 @@ public class MainActivity extends ActionBarActivity
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
+        return networkInfo != null && networkInfo.isConnected();
     }
 
-    public boolean fileExistance(String fname){
-        File file = getBaseContext().getFileStreamPath(fname);
+    @SuppressWarnings("unused")
+    public boolean fileExistence(String filename){
+        File file = getBaseContext().getFileStreamPath(filename);
         return file.exists();
     }
 
-    public boolean dbExists() {
+    private boolean dbExists() {
         File dbFile = getDatabasePath(DBHelper.DATABASE_NAME);
         return dbFile.exists();
     }
@@ -241,7 +228,7 @@ public class MainActivity extends ActionBarActivity
                 .commit();
     }
 
-    public static class StudentGroupNameComparator implements Comparator<StudentGroup> {
+    private static class StudentGroupNameComparator implements Comparator<StudentGroup> {
         @Override
         public int compare(StudentGroup group1, StudentGroup group2) {
             return group1.Name.compareTo(group2.Name);
@@ -265,12 +252,17 @@ public class MainActivity extends ActionBarActivity
 
         switch (id) {
             case R.id.action_changeGroup:
-                groupListFragment listFragment = new groupListFragment();
-                listFragment.show(getFragmentManager(), "chooseGroup");
+                if (mainGroups != null) {
+                    groupListFragment listFragment = new groupListFragment();
+                    listFragment.show(getFragmentManager(), "chooseGroup");
+                }
+                else {
+                    Toast.makeText(this, R.string.mainGroupsNotLoadedYet, Toast.LENGTH_LONG);
+                }
                 return true;
             case R.id.action_teachersSchedule:
-                Intent intent = new Intent(this, TeacherActivity.class);
-                startActivity(intent);
+                Intent teachersScheduleIntent = new Intent(this, TeacherActivity.class);
+                startActivity(teachersScheduleIntent);
                 return true;
             case R.id.action_session:
                 Intent sessionIntent = new Intent(this, Session.class);
@@ -288,6 +280,8 @@ public class MainActivity extends ActionBarActivity
         groupName = group.Name;
 
         setTitle(groupName);
+
+        NETWORK = isConnected();
 
         if (NETWORK) {
             TabsFragment fragment = new TabsFragment();

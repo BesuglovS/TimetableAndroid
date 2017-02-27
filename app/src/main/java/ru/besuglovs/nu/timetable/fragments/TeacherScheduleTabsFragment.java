@@ -1,6 +1,7 @@
 package ru.besuglovs.nu.timetable.fragments;
 
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -89,17 +89,12 @@ public class TeacherScheduleTabsFragment extends Fragment {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    showTeacherWeekSchedule(view, "Epic fail: " + error.getMessage());
+                    // TODO Grace error handling
                 }
             });
 
             // Return the View
             return view;
-        }
-
-        public void showTeacherWeekSchedule(View view, String text)
-        {
-            Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
         }
 
         public void showTeacherWeekSchedule(View view, List<teacherWeekLesson> weekLessons)
@@ -146,7 +141,10 @@ public class TeacherScheduleTabsFragment extends Fragment {
                     }
 
                     TextView dowName = new TextView(getActivity());
-                    dowName.setText(dowNames.get(dow) + " (" + dateString + ")");
+                    Resources resources = getResources();
+                    String dateDowString = String.format(
+                            resources.getString(R.string.dowDate), dowNames.get(dow), dateString);
+                    dowName.setText(dateDowString);
                     dowName.setBackgroundColor(getResources().getColor(R.color.somewhatBlueGreen));
                     dowName.setTextColor(getResources().getColor(R.color.lightGray));
                     dowName.setGravity(Gravity.CENTER);
@@ -177,6 +175,6 @@ public class TeacherScheduleTabsFragment extends Fragment {
     }
 
     public interface SwitchNoNetwork {
-        public void DoNoNetwork();
+        void DoNoNetwork();
     }
 }

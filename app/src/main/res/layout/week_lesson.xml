@@ -7,11 +7,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="14:00"
+        android:text="@string/exampleLessonTime"
         android:id="@+id/time"
         android:background="#72AAFF"
         android:textColor="#ddffdd"
-        android:layout_centerVertical="true"
         android:padding="3sp"
         android:layout_gravity="center_vertical" />
 
@@ -26,7 +25,7 @@
             android:layout_height="wrap_content"
             android:background="#72AAFF"
             android:textColor="#ddffdd"
-            android:text="Алгебра и аналитическая геометрия"
+            android:text="@string/exampleGroupName"
             android:id="@+id/discName"
             android:padding="3sp" />
 
@@ -35,7 +34,7 @@
             android:layout_height="wrap_content"
             android:background="#72AAFF"
             android:textColor="#ddffdd"
-            android:text="Соколовский Валерий Борисович"
+            android:text="@string/exampleTeacherFio"
             android:id="@+id/teacherFIO"
             android:padding="3sp" />
 
@@ -44,7 +43,7 @@
             android:layout_height="wrap_content"
             android:background="#72AAFF"
             android:textColor="#ddffdd"
-            android:text="Ауд. 304"
+            android:text="@string/exampleAuditorium"
             android:id="@+id/audName"
             android:padding="3sp"
             android:layout_gravity="center_vertical" />

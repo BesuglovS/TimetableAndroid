@@ -10,5 +10,16 @@
 
     <string name="title_activity_session">Расписание сессии (СГОАН)</string>
     <string name="session_schedule">Расписание сессии</string>
+    <string name="exam">Экзамен</string>
+
+    <string name="changeGroup">Изменить группу</string>
+    <string name="exampleLessonTime">14:00</string>
+    <string name="exampleGroupName">12 А</string>
+    <string name="exampleDisciplineName">Алгебра и аналитическая геометрия</string>
+    <string name="consultation">Консультация</string>
+    <string name="exampleTeacherFio">Соколовский Валерий Борисович</string>
+    <string name="exampleAuditorium">Ауд. 304</string>
+    <string name="dowDate">"%1$s (%2$s)"</string>
+    <string name="mainGroupsNotLoadedYet">Список групп ещё не загрузился</string>
 
 </resources>

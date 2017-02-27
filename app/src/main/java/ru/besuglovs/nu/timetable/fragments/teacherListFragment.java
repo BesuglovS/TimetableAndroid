@@ -40,7 +40,7 @@ public class teacherListFragment extends DialogFragment {
     }
 
     public interface TeacherChoiceCallbacks {
-        public void onTeacherSelected(Teacher teacher);
+        void onTeacherSelected(Teacher teacher);
     }
 
     @Override

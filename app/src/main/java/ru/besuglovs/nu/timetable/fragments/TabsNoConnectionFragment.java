@@ -1,6 +1,7 @@
 package ru.besuglovs.nu.timetable.fragments;
 
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -119,9 +119,7 @@ public class TabsNoConnectionFragment extends Fragment {
             List<weekLesson> weekLessons = null;
             try {
                 weekLessons = GetWeekLessonsFromDB(MainActivity.groupId, week);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
+            } catch (SQLException | ParseException e) {
                 e.printStackTrace();
             }
 
@@ -215,19 +213,7 @@ public class TabsNoConnectionFragment extends Fragment {
                 groupWithIds.put(g.StudentGroupId, g);
             }
 
-            List<Student> students = dbHelper.getStudentDao().queryForAll();
-            Map<Integer, Student> studWithIds = new HashMap<>();
-            for (Student s : students)
-            {
-                studWithIds.put(s.StudentId, s);
-            }
-
             List<StudentsInGroups> sigs = dbHelper.getStudentsInGroupsDao().queryForAll();
-            Map<Integer, StudentsInGroups> sigWithIds = new HashMap<>();
-            for (StudentsInGroups sig : sigs)
-            {
-                sigWithIds.put(sig.StudentsInGroupsId, sig);
-            }
 
             //groupIds
             List<Integer> groupStudentIds = new ArrayList<>();
@@ -324,11 +310,6 @@ public class TabsNoConnectionFragment extends Fragment {
             return result;
         }
 
-        public void showWeekSchedule(View view, String text)
-        {
-            Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
-        }
-
         public void showWeekSchedule(View view, List<weekLesson> weekLessons)
         {
             Map<Integer, String> dowNames = new HashMap<>();
@@ -377,7 +358,10 @@ public class TabsNoConnectionFragment extends Fragment {
                     }
 
                     TextView dowName = new TextView(getActivity());
-                    dowName.setText(dowNames.get(dow) + " (" + dateString + ")");
+                    Resources resources = getResources();
+                    String dateDowString = String.format(
+                            resources.getString(R.string.dowDate), dowNames.get(dow), dateString);
+                    dowName.setText(dateDowString);
                     dowName.setBackgroundColor(getResources().getColor(R.color.somewhatBlueGreen));
                     dowName.setTextColor(getResources().getColor(R.color.lightGray));
                     dowName.setGravity(Gravity.CENTER);
@@ -424,6 +408,6 @@ public class TabsNoConnectionFragment extends Fragment {
     }
 
     public interface SwitchToNetwork {
-        public void DoToNetwork();
+        void DoToNetwork();
     }
 }
